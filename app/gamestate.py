@@ -3,9 +3,10 @@ class GameState(object):
     A class to represent the current game state and find game object
     """
 
-    def __init__(self, gameboard, game):
-        self.board = gameboard
-        self.game = game
+    def __init__(self, data):
+        self.board = data["board"]
+        self.game = data["game"]
+        self.me = data["you"]
 
     def find_food(self):
         """

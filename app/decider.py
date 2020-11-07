@@ -7,8 +7,8 @@ class Decider(object):
     An class to decide the next move
     """
 
-    def __init__(self, gameboard, game):
-        self.gamestate = gamestate.GameState(gameboard, game)
+    def __init__(self, data):
+        self.gamestate = gamestate.GameState(data)
 
     def decide(self):
         """

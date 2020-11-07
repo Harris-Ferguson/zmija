@@ -26,3 +26,17 @@ class Finder(object):
             for spot in snake["body"]:
                 occupied.append(spot)
         return occupied
+
+    def find_hazards(self):
+        """
+        Returns the location of all board hazards
+        @return a list of the x-y dicts of locations on the board occupied by hazards
+        """
+        return self.board["hazards"]
+
+    def get_size(self):
+        """
+        Returns the dimensions of the gameboard
+        @return a dict with the height and width of the game board
+        """
+        return {"height": self.board["height"], "width":self.board["width"]}

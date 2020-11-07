@@ -41,11 +41,10 @@ class Battlesnake(object):
         # Valid moves are "up", "down", "left", or "right".
         # TODO: Use the information in cherrypy.request.json to decide your next move.
         data = cherrypy.request.json
-        decider = decider.Finder(data["board"], data["game"])
+        move_decider = decider.Decider(data["board"], data["game"])
 
-        # Choose a random direction to move in
-        possible_moves = ["up", "down", "left", "right"]
-        move = random.choice(possible_moves)
+        # Choose a direction
+        move = move_decider.decide()
         print("MOVE: {0}".format(move))
         return {"move": move}
 

@@ -18,3 +18,16 @@ class Decider(object):
         # TODO: This is currently just picking a random move.
         possible_moves = ["up", "down", "left", "right"]
         return random.choice(possible_moves)
+
+    def will_hit_hazard(move):
+        """
+        Takes the proposed move and checks if it will hit a hazard on the board
+        @param a move choice string (up, down, right, left)
+        @return True if the move will hit a hazard, false if the move is safe
+        """
+        bad_squares = gamestate.find_bad_squares()
+        new_location = gamestate.simulate_move(gamestate.me["body"][0], move)
+        for square in bad_squares:
+            if new_location["x"] == square["x"] and new_location["y"] == square["y"]:
+                return False
+        return True

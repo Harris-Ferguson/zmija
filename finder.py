@@ -40,3 +40,10 @@ class Finder(object):
         @return a dict with the height and width of the game board
         """
         return {"height": self.board["height"], "width":self.board["width"]}
+
+    def find_bad_squares(self):
+        """
+        Returns all invalid squares (snake or hazard) on the board
+        @return a list of x-y dicts of all bad squares on the board
+        """
+        return self.find_hazards() + self.find_snakes()

@@ -20,7 +20,6 @@ class Decider(object):
         choice = random.choice(possible_moves)
         while self.will_hit_hazard(choice):
             choice = random.choice(possible_moves)
-        print(choice)
         return choice
 
 
@@ -33,7 +32,7 @@ class Decider(object):
         bad_squares = self.game.find_bad_squares()
         new_location = self.game.simulate_move(self.game.get_self_head(), move)
         # Check if we will hit a wall
-        if new_location["x"] > self.game.get_board_size()["width"] or new_location["y"] > self.game.get_board_size()["height"] or new_location["x"] < 0 or new_location["y"] < 0:
+        if new_location["x"] >= self.game.get_board_size()["width"] or new_location["y"] >= self.game.get_board_size()["height"] or new_location["x"] <= 0 or new_location["y"] <= 0:
             return True
         # check if we will hit a bad square
         for square in bad_squares:

@@ -47,3 +47,19 @@ class GameState(object):
         @return a list of x-y dicts of all bad squares on the board
         """
         return self.find_hazards() + self.find_snakes()
+
+    def simulate_move(pos, move):
+        """
+        Returns the new coordinates of a proposed move
+        @param pos: the starting coordinates before move
+        @param move: A string move (left, right, up, down)
+        @return: the new coordinates after a move
+        """
+        if "right" in move.lower():
+            return {"x":pos["x"] + 1, "y": pos["y"]}
+        if "left" in move.lower():
+            return {"x":pos["x"] - 1, "y": pos["y"]}
+        if "up" in move.lower():
+            return {"x":pos["x"], "y": pos["y"] + 1}
+        if "down" in move.lower():
+            return {"x":pos["x"], "y": pos["y"] - 1}

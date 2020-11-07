@@ -12,6 +12,9 @@ Although repl is the easiest to just get the snake running for testing, there ar
 - You could run this server on your machine, but you would need to set up a port forwarding tool 
 - You can set up a function app on Azure, and through the U of S we get $100 compute credits for free, so this is a decent alternative 
 
+### Mojave
+[Mojave](https://github.com/smallsco/mojave) is a 3rd party battlesnakes desktop app. You can use this to test your server offline, its incredibly useful. Makes the process a lot smoother than constantly updating a repl and going to the battlesnakes site.
+
 ## Dependancies 
 You will need the CherryPy module installed on your repl for this to work. If you are having trouble running the server on repl, make sure you install cherrypy using pip.
 

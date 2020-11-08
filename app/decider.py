@@ -1,5 +1,4 @@
 import random
-
 import gamestate
 
 class Decider(object):

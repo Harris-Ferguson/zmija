@@ -1,7 +1,6 @@
 import pytest
 from pathlib import Path
 import json
-
 from app.gamestate import *
 
 test_request = json.loads(Path('tests/full_request.json').read_text())

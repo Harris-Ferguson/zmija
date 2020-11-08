@@ -1,0 +1,55 @@
+{
+  "game": {
+    "id": "game-00fe20da-94ad-11ea-bb37",
+    "ruleset": {
+      "name": "standard",
+      "version": "v.1.2.3"
+    },
+    "timeout": 500
+  },
+  "turn": 14,
+  "board": {
+    "height": 5,
+    "width": 5,
+    "food": [
+      {"x": 5, "y": 5},
+      {"x": 4, "y": 0},
+      {"x": 1, "y": 2}
+    ],
+    "hazards": [
+      {"x": 3, "y": 3}
+    ],
+    "snakes": [
+      {
+        "id": "snake-508e96ac-94ad-11ea-bb37",
+        "name": "My Snake",
+        "health": 54,
+        "body": [
+          {"x": 0, "y": 0},
+          {"x": 1, "y": 0},
+          {"x": 2, "y": 0}
+        ],
+        "latency": "111",
+        "head": {"x": 0, "y": 0},
+        "length": 3,
+        "shout": "why are we shouting??",
+        "squad": ""
+      }
+    ]
+  },
+  "you": {
+    "id": "snake-508e96ac-94ad-11ea-bb37",
+    "name": "My Snake",
+    "health": 54,
+    "body": [
+      {"x": 0, "y": 0},
+      {"x": 1, "y": 0},
+      {"x": 2, "y": 0}
+    ],
+    "latency": "111",
+    "head": {"x": 0, "y": 0},
+    "length": 3,
+    "shout": "why are we shouting??",
+    "squad": ""
+  }
+}

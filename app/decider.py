@@ -46,6 +46,9 @@ class Decider(object):
                 return True
         return False
 
+    def find_closest_food(self):
+        pass
+
     def find_simple_path(self, target):
         """
         simple and janky pathfinder

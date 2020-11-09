@@ -15,7 +15,7 @@ class Battlesnake(object):
         # It controls your Battlesnake appearance and author permissions.
         # TIP: If you open your Battlesnake URL in browser you should see this data
         return {
-            "apiversion": "1",
+            "apiversion": "0",
             "author": "",  # TODO: Your Battlesnake Username
             "color": "#888888",  # TODO: Personalize
             "head": "default",  # TODO: Personalize
@@ -41,7 +41,7 @@ class Battlesnake(object):
         # Valid moves are "up", "down", "left", or "right".
         # TODO: Use the information in cherrypy.request.json to decide your next move.
         data = cherrypy.request.json
-        move_decider = decider.Decider(data["board"], data["game"])
+        move_decider = decider.Decider(data)
 
         # Choose a direction
         move = move_decider.decide()

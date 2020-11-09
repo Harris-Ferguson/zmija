@@ -27,10 +27,9 @@ class PathfinderBase(object):
         @param point: an xy dict point
         @return: true if the point is on the board, false otherwise
         """
-        print(point)
-        if point["x"] > self.game.get_board_size()["width"] or point["x"] < 0:
+        if point["x"] > self.game.get_board_size()["width"] - 1 or point["x"] < 0:
             return True
-        if point["y"] > self.game.get_board_size()["height"] or point["y"] < 0:
+        if point["y"] > self.game.get_board_size()["height"] - 1 or point["y"] < 0:
             return True
         return False
 

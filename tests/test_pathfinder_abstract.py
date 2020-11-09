@@ -40,6 +40,8 @@ def test_is_off_edge():
     assert test_pathfinder.is_off_edge({"x": -1,"y":5}) == True
     assert test_pathfinder.is_off_edge({"x": 3,"y":-12}) == True
     assert test_pathfinder.is_off_edge({"x": -1,"y":-1}) == True
+    assert test_pathfinder.is_off_edge({"x": 5,"y": 4}) == True
+    assert test_pathfinder.is_off_edge({"x": -1,"y":0}) == True
 
 
 def test_simulate_move():

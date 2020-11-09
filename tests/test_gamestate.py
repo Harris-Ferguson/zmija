@@ -22,11 +22,5 @@ def test_find_hazards():
 def test_find_bad_squares():
     assert test_game.find_bad_squares() == [{"x": 0, "y": 0},{"x": 0, "y": 0},{"x": 1, "y": 0},{"x": 2, "y": 0},{"x": 5, "y": 4},{"x": 5, "y": 3},{"x": 6, "y": 3},{"x": 6, "y": 2}]
 
-def test_simulate_move():
-    assert test_game.simulate_move({"x": 0, "y": 0}, "right") == {"x": 1, "y": 0}
-    assert test_game.simulate_move({"x": 0, "y": 0}, "left") == {"x": -1, "y": 0}
-    assert test_game.simulate_move({"x": 0, "y": 0}, "up") == {"x": 0, "y": -1}
-    assert test_game.simulate_move({"x": 0, "y": 0}, "down") == {"x": 0, "y": 1}
-
 def test_get_self():
     assert test_game.get_self() == test_request["you"]

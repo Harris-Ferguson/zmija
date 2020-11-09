@@ -37,7 +37,7 @@ class Decider(object):
         bad_squares = self.game.find_bad_squares()
         new_location = self.game.simulate_move(self.game.get_self_head(), move)
         # Check if we will hit a wall
-        if new_location["x"] > self.game.get_board_size()["width"] or new_location["y"] > self.game.get_board_size()["height"] or new_location["x"] < 0 or new_location["y"] < 0:
+        if self.is_off_edge(new_location):
             return True
         # check if we will hit a bad square
         for square in bad_squares:
@@ -47,6 +47,18 @@ class Decider(object):
 
     def find_closest_food(self):
         pass
+
+    def is_off_edge(self, point):
+        """
+        Checks if a given point is off the game board
+        @param point: an xy dict point
+        @return: true if the point is on the board, false otherwise
+        """
+        if point["x"] > self.game.get_board_size()["width"] or point["x"] < 0:
+            return True
+        if point["y"] > self.game.get_board_size()["height"] or point["y"] < 0:
+            return True
+        return False
 
     def find_simple_path(self, target):
         """

@@ -29,3 +29,12 @@ def test_will_hit_hazard():
     assert test_decider.will_hit_hazard("up") == True
     assert test_decider.will_hit_hazard("right") == True
     assert test_decider.will_hit_hazard("left") == True
+
+def test_is_off_edge():
+    assert test_decider.is_off_edge({"x": 6,"y":6}) == True
+    assert test_decider.is_off_edge({"x": 3,"y":2}) == False
+    assert test_decider.is_off_edge({"x": 0,"y":0}) == False
+    assert test_decider.is_off_edge({"x": 3,"y":2}) == False
+    assert test_decider.is_off_edge({"x": -1,"y":5}) == True
+    assert test_decider.is_off_edge({"x": 3,"y":-12}) == True
+    assert test_decider.is_off_edge({"x": -1,"y":-1}) == True

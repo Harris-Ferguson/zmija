@@ -15,6 +15,12 @@ class GameState(object):
         """
         return self.board["food"]
 
+    def get_self(self):
+        """
+        Returns the current snake
+        """
+        return self.me
+
     def get_self_head(self):
         """
         returns the x-y dict of the head of the snake, i.e. returns our current position

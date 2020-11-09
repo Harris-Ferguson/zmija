@@ -27,3 +27,6 @@ def test_simulate_move():
     assert test_game.simulate_move({"x": 0, "y": 0}, "left") == {"x": -1, "y": 0}
     assert test_game.simulate_move({"x": 0, "y": 0}, "up") == {"x": 0, "y": -1}
     assert test_game.simulate_move({"x": 0, "y": 0}, "down") == {"x": 0, "y": 1}
+
+def test_get_self():
+    assert test_game.get_self() == test_request["you"]

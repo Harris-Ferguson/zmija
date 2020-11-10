@@ -14,8 +14,8 @@ class Battlesnake(object):
         # TIP: If you open your Battlesnake URL in browser you should see this data
         return {
             "apiversion": "1",
-            "author": "Usask 2nd Year CS", 
-            "color": "#339933",
+            "author": "Usask 2nd Year CS",
+            "color": "#339922",
             "head": "pixel",
             "tail": "block-bum",
         }

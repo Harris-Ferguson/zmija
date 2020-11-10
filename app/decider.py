@@ -1,5 +1,6 @@
 import random
 import gamestate
+import simple_path
 
 class Decider(object):
     """
@@ -14,67 +15,5 @@ class Decider(object):
         returns a move choice
         @return a string move choice, either up down left or right
         """
-        possible_moves = ["up", "down", "left", "right"]
-        # try to move towards some food
-        closest_food = self.game.find_food()
-        # if theres no food move in a random direction
-        if not closest_food:
-            choice = random.choice(possible_moves)
-        else:
-            choice = self.find_simple_path(closest_food[0])
-        # if its dangerous move in a random other direction
-        while self.will_hit_hazard(choice):
-            choice = random.choice(possible_moves)
-        return choice
-
-
-    def will_hit_hazard(self, move):
-        """
-        Takes the proposed move and checks if it will hit a hazard on the board
-        @param a move choice string (up, down, right, left)
-        @return True if the move will hit a hazard, false if the move is safe
-        """
-        bad_squares = self.game.find_bad_squares()
-        new_location = self.game.simulate_move(self.game.get_self_head(), move)
-        # Check if we will hit a wall
-        if self.is_off_edge(new_location):
-            return True
-        # check if we will hit a bad square
-        for square in bad_squares:
-            if new_location["x"] == square["x"] and new_location["y"] == square["y"]:
-                return True
-        return False
-
-    def find_closest_food(self):
-        pass
-
-    def is_off_edge(self, point):
-        """
-        Checks if a given point is off the game board
-        @param point: an xy dict point
-        @return: true if the point is on the board, false otherwise
-        """
-        if point["x"] > self.game.get_board_size()["width"] or point["x"] < 0:
-            return True
-        if point["y"] > self.game.get_board_size()["height"] or point["y"] < 0:
-            return True
-        return False
-
-    def find_simple_path(self, target):
-        """
-        simple and janky pathfinder
-        Lines up on the x axis first then moves towards the y location
-        @param target: and x-y dict of the target square
-        @return the next step to take as a string (up, down, left, right)
-        """
-        current_location = self.game.get_self_head()
-        if target["x"] != current_location["x"]:
-            if target["x"] < current_location["x"]:
-                return "left"
-            else:
-                return "right"
-        elif target["y"] != current_location["y"]:
-            if target["y"] < current_location["y"]:
-                return "up"
-            else:
-                return "down"
+        pathfinder = simple_path.SimplePath(self.game)
+        return pathfinder.next_move()

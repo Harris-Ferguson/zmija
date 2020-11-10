@@ -15,6 +15,12 @@ class GameState(object):
         """
         return self.board["food"]
 
+    def get_self(self):
+        """
+        Returns the current snake
+        """
+        return self.me
+
     def get_self_head(self):
         """
         returns the x-y dict of the head of the snake, i.e. returns our current position
@@ -45,7 +51,6 @@ class GameState(object):
         except KeyError:
             return []
 
-
     def get_board_size(self):
         """
         Returns the dimensions of the gameboard
@@ -59,19 +64,3 @@ class GameState(object):
         @return a list of x-y dicts of all bad squares on the board
         """
         return self.find_hazards() + self.find_snakes()
-
-    def simulate_move(self, pos, move):
-        """
-        Returns the new coordinates of a proposed move
-        @param pos: the starting coordinates before move
-        @param move: A string move (left, right, up, down)
-        @return: the new coordinates after a move
-        """
-        if "right" in move.lower():
-            return {"x":pos["x"] + 1, "y": pos["y"]}
-        if "left" in move.lower():
-            return {"x":pos["x"] - 1, "y": pos["y"]}
-        if "up" in move.lower():
-            return {"x":pos["x"], "y": pos["y"] - 1}
-        if "down" in move.lower():
-            return {"x":pos["x"], "y": pos["y"] + 1}

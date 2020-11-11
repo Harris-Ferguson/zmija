@@ -4,13 +4,14 @@ import random
 
 class FindPath(PathfinderBase):
     def next_move(self, target):
-        next_move = self.find_path(target)
-        return next_move
+        move = self.find_path(target)
+        return move
 
     def find_path(self, target):
         current_location = self.game.get_self_head()
         choices = []
-        safe_moves = self.filter_unsafe_moves(["left", "right", "down", "up"])
+        moves = ["left", "right", "down", "up"]
+        safe_moves = [x for x in moves if not self.will_hit_hazard(x)]
         if target["x"] != current_location["x"]:
             if target["x"] < current_location["x"]:
                 choices.append("left")
@@ -21,16 +22,10 @@ class FindPath(PathfinderBase):
                 choices.append("up")
             else:
                 choices.append("down")
-        choices = self.filter_unsafe_moves(choices)
-        if len(choices) == 1:
-            return choices[0]
-        if len(choices) == 0:
+        good_moves = list(set(safe_moves).intersection(choices))
+        if len(good_moves) == 1:
+            return good_moves[0]
+        if len(good_moves) == 0:
             return random.choice(safe_moves)
         else:
-            return random.choice(choices)
-
-    def filter_unsafe_moves(self, moves):
-        for move in moves:
-            if self.will_hit_hazard(move):
-                moves.remove(move)
-        return moves
+            return random.choice(good_moves)

@@ -62,6 +62,35 @@ class PathfinderBase(object):
             return True
         return False
 
+    def will_trap_self(self, move):
+        """
+        Check if a move leads to trapping ourselves
+        currently just checks in a straight line
+        :param coord: a string move (left, right, up, down)
+        """
+        # this is a gross function. idk why i wrote it like this
+        current_spot = self.game.get_self_head()
+        next_spot = self.simulate_move(current_spot, move)
+        snake = self.game.get_self()
+
+        #Checks if we are trapping ourselves against a wall by turning into ourself
+        if current_spot["x"] > next_spot["x"]:
+            for spot in snake:
+                if next_spot["x"] < spot["x"]:
+                    return True
+        if current_spot["x"] < next_spot["x"]:
+            for spot in snake:
+                if next_spot["x"] > spot["x"]:
+                    return True
+        if current_spot["y"] > next_spot["y"]:
+            for spot in snake:
+                if next_spot["y"] < spot["y"]:
+                    return True
+        if current_spot["y"] < next_spot["y"]:
+            for spot in snake:
+                if next_spot["y"] > spot["y"]:
+                    return True
+
     def simulate_move(self, pos, move):
         """
         Returns the new coordinates of a proposed move
@@ -80,3 +109,4 @@ class PathfinderBase(object):
 
     def find_closest_food(self):
         pass
+

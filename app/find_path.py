@@ -23,6 +23,9 @@ class FindPath(PathfinderBase):
             else:
                 choices.append("down")
         good_moves = list(set(safe_moves).intersection(choices))
+        for move in good_moves:
+            if self.will_trap_self(move):
+                good_moves.remove(move)
         if len(good_moves) == 1:
             return good_moves[0]
         if len(good_moves) == 0:

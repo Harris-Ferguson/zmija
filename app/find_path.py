@@ -1,31 +1,36 @@
 from pathfinder_abstract import PathfinderBase
+import random
 
 
 class FindPath(PathfinderBase):
     def next_move(self, target):
-        safe_squares = self.get_safe_squares()
-        next_move = self.find_path(safe_squares, target)
+        next_move = self.find_path(target)
+        return next_move
 
-    def get_safe_squares(self):
-        bad_squares = self.game.find_bad_squares()
-        print(bad_squares)
-        board = []
-        for x in range(self.game.get_board_size()["width"]):
-            for y in range(self.game.get_board_size()["height"]):
-                if {"x": x, "y": y} not in bad_squares:
-                    print(x, y)
-                    board.append({"x": x, "y": y})
-        return board
-
-    def find_path(self, safe_squares, target):
+    def find_path(self, target):
         current_location = self.game.get_self_head()
+        choices = []
+        safe_moves = self.filter_unsafe_moves(["left", "right", "down", "up"])
         if target["x"] != current_location["x"]:
             if target["x"] < current_location["x"]:
-                return "left"
+                choices.append("left")
             else:
-                return "right"
-        elif target["y"] != current_location["y"]:
+                choices.append("right")
+        if target["y"] != current_location["y"]:
             if target["y"] < current_location["y"]:
-                return "up"
+                choices.append("up")
             else:
-                return "down"
+                choices.append("down")
+        choices = self.filter_unsafe_moves(choices)
+        if len(choices) == 1:
+            return choices[0]
+        if len(choices) == 0:
+            return random.choice(safe_moves)
+        else:
+            return random.choice(choices)
+
+    def filter_unsafe_moves(self, moves):
+        for move in moves:
+            if self.will_hit_hazard(move):
+                moves.remove(move)
+        return moves

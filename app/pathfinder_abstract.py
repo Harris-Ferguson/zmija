@@ -12,11 +12,10 @@ class PathfinderBase(object):
         super().__init__()
 
     @abstractmethod
-    def next_move(start):
+    def next_move(self, target):
         """
         Abstract path finding method
-        @param start: the starting point
-        @param end: the end point
+        @param target: where we are trying to get
         @return: the move
         """
         pass

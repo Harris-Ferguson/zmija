@@ -22,9 +22,6 @@ F - Food
 4          F
 """
 
-def test_closest_food():
-    assert test_pathfinder.find_closest_food() == {"x": 0, "y": 0}
-
 def test_will_hit_hazard():
     # in the test position from small_test_board, down is the only valid move
     assert test_pathfinder.will_hit_hazard("down") == False

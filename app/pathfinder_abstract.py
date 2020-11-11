@@ -1,5 +1,6 @@
 from abc import abstractmethod
 
+
 class PathfinderBase(object):
 
     def __init__(self, gamestate):
@@ -32,7 +33,6 @@ class PathfinderBase(object):
             return True
         return False
 
-
     def will_hit_hazard(self, move):
         """
         Takes the proposed move and checks if it will hit a hazard on the board
@@ -50,6 +50,18 @@ class PathfinderBase(object):
                 return True
         return False
 
+    def square_on_edge(self, coord):
+        """
+        Check if a square is on the edge of the board
+        :param coord: xy dictionary of the spot on the board to check
+        """
+        if coord["x"] == self.game.get_board_size()["width"] - 1 or coord["y"] == self.game.get_board_size()[
+            "height"] - 1:
+            return True
+        if coord["x"] == 0 or coord["y"] == 0:
+            return True
+        return False
+
     def simulate_move(self, pos, move):
         """
         Returns the new coordinates of a proposed move
@@ -58,13 +70,13 @@ class PathfinderBase(object):
         @return: the new coordinates after a move
         """
         if "right" in move.lower():
-            return {"x":pos["x"] + 1, "y": pos["y"]}
+            return {"x": pos["x"] + 1, "y": pos["y"]}
         if "left" in move.lower():
-            return {"x":pos["x"] - 1, "y": pos["y"]}
+            return {"x": pos["x"] - 1, "y": pos["y"]}
         if "up" in move.lower():
-            return {"x":pos["x"], "y": pos["y"] - 1}
+            return {"x": pos["x"], "y": pos["y"] - 1}
         if "down" in move.lower():
-            return {"x":pos["x"], "y": pos["y"] + 1}
+            return {"x": pos["x"], "y": pos["y"] + 1}
 
     def find_closest_food(self):
         pass

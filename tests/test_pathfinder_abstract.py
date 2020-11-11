@@ -46,3 +46,11 @@ def test_simulate_move():
     assert test_pathfinder.simulate_move({"x": 0, "y": 0}, "left") == {"x": -1, "y": 0}
     assert test_pathfinder.simulate_move({"x": 0, "y": 0}, "up") == {"x": 0, "y": -1}
     assert test_pathfinder.simulate_move({"x": 0, "y": 0}, "down") == {"x": 0, "y": 1}
+
+def test_square_on_edge():
+    assert test_pathfinder.square_on_edge({"x":0,"y":0}) == True
+    assert test_pathfinder.square_on_edge({"x":1,"y":0}) == True
+    assert test_pathfinder.square_on_edge({"x": 1, "y": 1}) == False
+    assert test_pathfinder.square_on_edge({"x": 4, "y": 4}) == True
+    assert test_pathfinder.square_on_edge({"x": 2, "y": 4}) == True
+    assert test_pathfinder.square_on_edge({"x": 2, "y": 2}) == False

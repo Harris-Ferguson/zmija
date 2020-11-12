@@ -15,7 +15,7 @@ class Battlesnake(object):
         # It controls your Battlesnake appearance and author permissions.
         # TIP: If you open your Battlesnake URL in browser you should see this data
         return {
-            "apiversion": "0",
+            "apiversion": "1",
             "author": "Usask 2nd Year Team",
             "color": "#2eb832",
             "head": "shac-tiger-king",

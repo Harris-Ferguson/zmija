@@ -91,6 +91,22 @@ class PathfinderBase(object):
                 if next_spot["y"] > spot["y"]:
                     return True
 
+    def will_hit_food(self, move):
+        """
+        Takes the proposed move and checks if it will it a food on the board
+        :param move: a move choice string (up, down, right, left)
+        :return: True if the move will hit a food, false if the move does not.
+        """
+
+        food_spots = self.game.find_food()
+        new_location = self.simulate_move(self.game.get_self_head(), move)
+        # Check if we hit a food
+        for food in food_spots:
+            if new_location["x"] == food["x"] and new_location["y"] == food["y"]:
+                return True
+        return False
+
+
     def simulate_move(self, pos, move):
         """
         Returns the new coordinates of a proposed move
@@ -109,4 +125,3 @@ class PathfinderBase(object):
 
     def find_closest_food(self):
         pass
-

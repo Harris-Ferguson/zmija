@@ -2,7 +2,7 @@ from pathfinder_abstract import PathfinderBase
 import random
 
 class FullPath(PathfinderBase):
-    def next_move(self):
+    def next_move(self, target):
         possible_moves = ["up", "down", "left", "right"]
         prefered_moves = []
         food = self.game.find_food()

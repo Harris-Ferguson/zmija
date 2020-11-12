@@ -18,7 +18,12 @@ class Decider(object):
         @return a string move choice, either up down left or right
         """
         pathfinder = simple_path.SimplePath(self.game)
-        return pathfinder.next_move()
+        food = self.get_closest_food(self.game.find_food())
+        if not food:
+            pathfinder = full_path.FullPath(self.game)
+        else:
+            pathfinder = find_path.FindPath(self.game)
+        return pathfinder.next_move(food)
 
     def get_distance(self, coor1, coor2):
         """
@@ -35,7 +40,7 @@ class Decider(object):
         min_distance = 50
         closest_coor = {}
         for coor in food_list:
-            curr_distance = self.get_distance(gamestate.get_self_head(), coor)
+            curr_distance = self.get_distance(self.game.get_self_head(), coor)
             if curr_distance < min_distance:
                 min_distance = curr_distance
                 closest_coor = coor

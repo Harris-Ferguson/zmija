@@ -71,7 +71,7 @@ class PathfinderBase(object):
         # this is a gross function. idk why i wrote it like this
         current_spot = self.game.get_self_head()
         next_spot = self.simulate_move(current_spot, move)
-        snake = self.game.get_self()
+        snake = self.game.get_self()["body"]
 
         #Checks if we are trapping ourselves against a wall by turning into ourself
         if current_spot["x"] > next_spot["x"]:

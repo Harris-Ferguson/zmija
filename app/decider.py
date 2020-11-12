@@ -2,6 +2,7 @@ import random
 import gamestate
 import simple_path
 import full_path
+import find_path
 
 class Decider(object):
     """
@@ -67,3 +68,4 @@ class Decider(object):
             else:
                 return [best_coor, True]
         return [best_coor, False]
+

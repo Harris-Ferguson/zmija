@@ -118,9 +118,9 @@ class PathfinderBase(object):
             return {"x": pos["x"] + 1, "y": pos["y"]}
         if "left" in move.lower():
             return {"x": pos["x"] - 1, "y": pos["y"]}
-        if "up" in move.lower():
-            return {"x": pos["x"], "y": pos["y"] - 1}
         if "down" in move.lower():
+            return {"x": pos["x"], "y": pos["y"] - 1}
+        if "up" in move.lower():
             return {"x": pos["x"], "y": pos["y"] + 1}
 
     def find_closest_food(self):

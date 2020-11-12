@@ -76,4 +76,3 @@ class Decider(object):
             else:
                 return [best_coor, True]
         return [best_coor, False]
-

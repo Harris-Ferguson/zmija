@@ -1,6 +1,7 @@
 import random
 import gamestate
 import simple_path
+import full_path
 
 class Decider(object):
     """

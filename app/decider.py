@@ -17,9 +17,12 @@ class Decider(object):
         returns a move choice
         @return a string move choice, either up down left or right
         """
-        pathfinder = simple_path.SimplePath(self.game)
         food = self.get_closest_food(self.game.find_food())
         if not food:
+            pathfinder = full_path.FullPath(self.game)
+        if self.game.get_self()["health"] < 30:
+            pathfinder = find_path.FindPath(self.game)
+        elif self.game.get_self()["health"] > 30:
             pathfinder = full_path.FullPath(self.game)
         else:
             pathfinder = find_path.FindPath(self.game)

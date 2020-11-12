@@ -2,6 +2,7 @@ import random
 import gamestate
 import simple_path
 import full_path
+import find_path
 
 class Decider(object):
     """
@@ -16,5 +17,10 @@ class Decider(object):
         returns a move choice
         @return a string move choice, either up down left or right
         """
-        pathfinder = simple_path.SimplePath(self.game)
-        return pathfinder.next_move()
+        pathfinder = find_path.FindPath(self.game)
+        closest_food = self.game.find_food()
+        if not closest_food:
+            choice = pathfinder.find_path({"x":0,"y":0})
+        else:
+            choice = pathfinder.find_path(closest_food[0])
+        return choice

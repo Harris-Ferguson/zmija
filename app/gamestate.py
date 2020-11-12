@@ -29,6 +29,20 @@ class GameState(object):
         selfsnake = self.me["body"]
         return selfsnake[0]
 
+    def get_remaining_snakes(self):
+        """
+        returns the remaining snakes on the board (including our snake)
+        @return the remaining snakes currently on the board (1-4)
+        """
+        return self.board["snakes"]
+
+    def get_health(self):
+        """
+        returns the health of our snake
+        :return: an integer represents the health level of our snake
+        """
+        return self.me["health"]
+
     def find_snakes(self):
         """
         Returns the location of all squares occupied by snakes (including self)

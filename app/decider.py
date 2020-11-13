@@ -2,6 +2,7 @@ import random
 import gamestate
 import full_path
 import find_path
+import minimax
 
 class Decider(object):
     """
@@ -16,16 +17,8 @@ class Decider(object):
         returns a move choice
         @return a string move choice, either up down left or right
         """
-        food = self.get_closest_food(self.game.find_food())
-        if not food:
-            pathfinder = full_path.FullPath(self.game)
-        if self.game.get_self()["health"] < 30:
-            pathfinder = find_path.FindPath(self.game)
-        elif self.game.get_self()["health"] > 30:
-            pathfinder = full_path.FullPath(self.game)
-        else:
-            pathfinder = find_path.FindPath(self.game)
-        return pathfinder.next_move(food)
+        pathfinder = minimax.MiniMax(self.game)
+        return pathfinder.next_move()
 
     def get_distance(self, coor1, coor2):
         """

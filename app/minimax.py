@@ -15,19 +15,28 @@ class MiniMax(PathfinderBase):
             self.simBoard.undo_move()
         return max(move_values, key=move_values.get)
 
-    def heuristic(self, board):
+    def heuristic(self):
         """
         Heuristic function
         :param self.simBoard: the self.simBoard simulation state to check the Heuristic function on (self.simBoardSimulate Object)
         :return: float scalar value of how good this node is for the maxing player
         """
         scalar = 0.0
-        if self.game.get_self()['body'][0]['x'] == self.simBoard.board["width"] - 1 or self.game.get_self()['body'][0]['y'] \
+        if self.get_maxing_snake()['body'][0]['x'] == self.simBoard.board["width"] - 1 or self.get_maxing_snake()['body'][0]['y'] \
                 == self.simBoard.board["height"] - 1:
             scalar -= 0.4
-        if self.game.get_self()['body'][0]['x'] == 0 or self.game.get_self()['body'][0]['y'] == 0:
+        if self.get_maxing_snake()['body'][0]['x'] == 0 or self.get_maxing_snake()['body'][0]['y'] == 0:
             scalar -= 0.4
+        if self.is_close_to_food():
+            scalar += 0.3
         return scalar
+
+    def is_close_to_food(self):
+        self_head = self.get_maxing_snake()["body"][0]
+        for food in self.simBoard.board["food"]:
+            if abs(food["x"] - self_head["x"]) + abs(food["x"] - self_head["x"]) <= 3:
+                return True
+        return False
 
     def is_terminal_leaf(self):
         """
@@ -39,6 +48,8 @@ class MiniMax(PathfinderBase):
         for move in ["left", "right", "up", "down"]:
             if self.will_hit_hazard(move, self.get_maxing_snake()["body"][0]):
                 return True
+        if self.is_off_edge(self.get_maxing_snake()["body"][0]):
+            return True
         return False
 
 
@@ -50,7 +61,7 @@ class MiniMax(PathfinderBase):
         :return: node edge value of the optimal node (move)
         """
         if depth == 0 or self.is_terminal_leaf():
-            return self.heuristic(self.simBoard)
+            return self.heuristic()
         if max_player:
             value = -1.0
             for move in ["right", "left", "up", "down"]:
@@ -85,3 +96,14 @@ class MiniMax(PathfinderBase):
             if snake["name"] == self.game.get_self()["name"]:
                 max_snake = snake
         return max_snake
+
+    def is_off_edge(self, point):
+        """
+        Checks if a given point is off the game board
+        @param point: an xy dict point
+        @return: true if the point is on the board, false otherwise
+        """
+        if point["x"] > self.simBoard.board["width"] - 1 or point["x"] < 0:
+            return True
+        if point["y"] > self.simBoard.board["height"] - 1 or point["y"] < 0:
+            return True

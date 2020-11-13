@@ -90,4 +90,5 @@ class GameState(object):
         for snake in snakes:
             # first element is the head
             heads.append(snake["body"][0])
+        heads.remove(self.get_self_head())
         return heads

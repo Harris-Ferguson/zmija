@@ -33,14 +33,15 @@ class PathfinderBase(object):
             return True
         return False
 
-    def will_hit_hazard(self, move):
+    def will_hit_hazard(self, move, pos):
         """
         Takes the proposed move and checks if it will hit a hazard on the board
-        @param a move choice string (up, down, right, left)
-        @return True if the move will hit a hazard, false if the move is safe
+        :param move: a move choice string (up, down, right, left)
+        :param pos: the position to check from
+        :return: True if the move will hit a hazard, false if the move is safe
         """
         bad_squares = self.game.find_bad_squares()
-        new_location = self.simulate_move(self.game.get_self_head(), move)
+        new_location = self.simulate_move(pos, move)
         # Check if we will hit a wall
         if self.is_off_edge(new_location):
             return True

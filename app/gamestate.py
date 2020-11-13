@@ -88,5 +88,6 @@ class GameState(object):
         snakes = self.board["snakes"]
         heads = []
         for snake in snakes:
-            heads.append(snake["head"])
+            # first element is the head
+            heads.append(snake["body"][0])
         return heads

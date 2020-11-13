@@ -14,13 +14,13 @@ class FullPath(PathfinderBase):
 
         'Avoid any food and trapping self'
         for x in possible_moves:
-            if not self.will_hit_food(x) and not self.will_hit_hazard(x) and not self.head_collision_chance(x):
+            if not self.will_hit_food(x) and not self.will_hit_hazard(x, self.game.get_self_head()) and not self.head_collision_chance(x):
                 pref_lvl_1.append(x)
-            elif self.will_hit_food(x) and not self.will_hit_hazard(x) and not self.head_collision_chance(x):
+            elif self.will_hit_food(x) and not self.will_hit_hazard(x, self.game.get_self_head()) and not self.head_collision_chance(x):
                 pref_lvl_2.append(x)
-            elif not self.will_hit_food(x) and not self.will_hit_hazard(x) and self.head_collision_chance(x):
+            elif not self.will_hit_food(x) and not self.will_hit_hazard(x, self.game.get_self_head()) and self.head_collision_chance(x):
                 pref_lvl_3.append(x)
-            elif self.will_hit_food(x) and not self.will_hit_hazard(x) and self.head_collision_chance(x):
+            elif self.will_hit_food(x) and not self.will_hit_hazard(x, self.game.get_self_head()) and self.head_collision_chance(x):
                 pref_lvl_4.append(x)
 
         'Pick move in preference order'
@@ -37,6 +37,6 @@ class FullPath(PathfinderBase):
             return random.choice(pref_lvl_4)
 
         'Avoid dying'
-        while self.will_hit_hazard(choice):
+        while self.will_hit_hazard(choice, self.game.get_self_head()):
             choice = random.choice(possible_moves)
         return choice

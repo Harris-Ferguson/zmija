@@ -107,7 +107,8 @@ class PathfinderBase(object):
                 return True
         return False
 
-    def simulate_move(self, pos, move):
+    @staticmethod
+    def simulate_move(pos, move):
         """
         Returns the new coordinates of a proposed move
         @param pos: the starting coordinates before move

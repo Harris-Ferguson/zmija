@@ -134,15 +134,11 @@ class PathfinderBase(object):
         """
         heads = self.game.find_other_snake_heads()
         new_location = self.simulate_move(self.game.get_self_head(), move)
+        possible_enemy_moves = ["up", "right", "left", "down"]
 
         for head in heads:
-            if new_location["x"] == head["x"] + 1 and new_location["y"] == head["y"]:
-                return True
-            if new_location["x"] == head["x"] and new_location["y"] == head["y"] + 10:
-                return True
-            if new_location["x"] == head["x"] - 1 and new_location["y"] == head["y"]:
-                return True
-            if new_location["x"] == head["x"] and new_location["y"] == head["y"] - 1:
-                return True
-
+            for move in possible_enemy_moves:
+                new_enemy_move = self.simulate_move(head, move)
+                if new_enemy_move["x"] == new_location["x"] and new_enemy_move["y"] == new_location["y"]:
+                    return True
         return False

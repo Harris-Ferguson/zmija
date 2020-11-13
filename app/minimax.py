@@ -2,10 +2,16 @@ from pathfinder_abstract import PathfinderBase
 from board_simulate import BoardSimulate
 
 class MiniMax(PathfinderBase):
+    """
+    Minimax class
+    Fair wairning: I'm fairly happy with my minimax implementation, since it was my first time implementing it.
+    however this class is very poorly written. The things this class wants to do don't pair well with the rest of the design of the snake.
+    it uses its own methods that do the same thing as existing methods, and has major triangle of doom
+    """
     def __init__(self, game):
         super().__init__(game)
         self.simBoard = BoardSimulate(self.game.board)
-        
+
     def next_move(self):
         safe_moves = [x for x in ["right", "left", "up", "down"] if not self.will_hit_hazard(x, self.game.get_self_head())]
         move_values = {}
@@ -29,12 +35,14 @@ class MiniMax(PathfinderBase):
             scalar -= 0.4
         if self.is_close_to_food():
             scalar += 0.3
+        if self.get_maxing_snake()['health'] < 25:
+            scalar -= 0.6
         return scalar
 
     def is_close_to_food(self):
         self_head = self.get_maxing_snake()["body"][0]
         for food in self.simBoard.board["food"]:
-            if abs(food["x"] - self_head["x"]) + abs(food["x"] - self_head["x"]) <= 3:
+            if abs(food["x"] - self_head["x"]) + abs(food["x"] - self_head["x"]) <= 2:
                 return True
         return False
 
@@ -82,7 +90,7 @@ class MiniMax(PathfinderBase):
 
     def get_enemy_snake(self):
         """
-        Returns the opponent snake 
+        Returns the opponent snake
         """
         enemy_snake = {}
         for snake in self.simBoard.board["snakes"]:

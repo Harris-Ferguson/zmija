@@ -73,7 +73,7 @@ class PathfinderBase(object):
         next_spot = self.simulate_move(current_spot, move)
         snake = self.game.get_self()["body"]
 
-        #Checks if we are trapping ourselves against a wall by turning into ourself
+        # Checks if we are trapping ourselves against a wall by turning into ourself
         if current_spot["x"] > next_spot["x"]:
             for spot in snake:
                 if next_spot["x"] < spot["x"]:
@@ -106,7 +106,6 @@ class PathfinderBase(object):
                 return True
         return False
 
-
     def simulate_move(self, pos, move):
         """
         Returns the new coordinates of a proposed move
@@ -125,3 +124,25 @@ class PathfinderBase(object):
 
     def find_closest_food(self):
         pass
+
+    def head_collision_chance(self, move):
+        """
+        Checks if the move is in danger of a head to head collision
+        with another snake.
+        :param move:  A string move (left, right, up, down)
+        :return: True if there is a chance for a head collision, false if there is no chance.
+        """
+        heads = self.game.find_other_snake_heads
+        new_location = self.simulate_move(self.game.get_self_head(), move)
+
+        for head in heads:
+            if new_location["x"] == head["x"] + 1 and new_location["y"] == head["y"]:
+                return True
+            if new_location["x"] == head["x"] and new_location["y"] == head["y"] + 10:
+                return True
+            if new_location["x"] == head["x"] - 1 and new_location["y"] == head["y"]:
+                return True
+            if new_location["x"] == head["x"] and new_location["y"] == head["y"] - 1:
+                return True
+
+        return False

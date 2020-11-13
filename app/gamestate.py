@@ -70,7 +70,7 @@ class GameState(object):
         Returns the dimensions of the gameboard
         @return a dict with the height and width of the game board
         """
-        return {"height": self.board["height"], "width":self.board["width"]}
+        return {"height": self.board["height"], "width": self.board["width"]}
 
     def find_bad_squares(self):
         """
@@ -78,3 +78,15 @@ class GameState(object):
         @return a list of x-y dicts of all bad squares on the board
         """
         return self.find_hazards() + self.find_snakes()
+
+    def find_other_snake_heads(self):
+        """
+        Find and return info on all of the other snakes head positions.
+        :return: A list of dicts holding coordinates of snake heads(including self)
+        """
+
+        snakes = self.board["snakes"]
+        heads = []
+        for snake in snakes:
+            heads.append(snake["head"])
+        return heads

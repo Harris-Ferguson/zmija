@@ -11,7 +11,7 @@ class MiniMax(PathfinderBase):
         move_values = {}
         for move in safe_moves:
             self.simBoard.try_move(self.game.get_self(), move)
-            move_values[move] = self.minimax(4, True)
+            move_values[move] = self.minimax(5, True)
             self.simBoard.undo_move()
         return max(move_values, key=move_values.get)
 
@@ -22,11 +22,24 @@ class MiniMax(PathfinderBase):
         :return: float scalar value of how good this node is for the maxing player
         """
         scalar = 0.0
-        if len(self.game.get_self()["body"]) < len(self.get_enemy_snake()["body"]):
-            scalar -= 0.2
-        if len(self.game.get_self()["body"]) > len(self.get_enemy_snake()["body"]):
-            scalar += 0.2
+        if self.game.get_self()['body'][0]['x'] == self.simBoard.board["width"] - 1 or self.game.get_self()['body'][0]['y'] \
+                == self.simBoard.board["height"] - 1:
+            scalar -= 0.4
+        if self.game.get_self()['body'][0]['x'] == 0 or self.game.get_self()['body'][0]['y'] == 0:
+            scalar -= 0.4
         return scalar
+
+    def is_terminal_leaf(self):
+        """
+        checks if the board state is a terminal leaf of our minmax tree (i.e. we died)
+        :return: True if this state is a terminal leaf
+        """
+        if len(self.simBoard.board["snakes"]) <= 1:
+            return True
+        for move in ["left", "right", "up", "down"]:
+            if self.will_hit_hazard(move, self.get_maxing_snake()["body"][0]):
+                return True
+        return False
 
 
     def minimax(self, depth, max_player):
@@ -36,7 +49,7 @@ class MiniMax(PathfinderBase):
         :max_player: is this the maxing player or not?
         :return: node edge value of the optimal node (move)
         """
-        if depth == 0 or len(self.simBoard.board["snakes"]) <= 1:
+        if depth == 0 or self.is_terminal_leaf():
             return self.heuristic(self.simBoard)
         if max_player:
             value = -1.0

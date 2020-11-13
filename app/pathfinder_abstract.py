@@ -132,7 +132,7 @@ class PathfinderBase(object):
         :param move:  A string move (left, right, up, down)
         :return: True if there is a chance for a head collision, false if there is no chance.
         """
-        heads = self.game.find_other_snake_heads
+        heads = self.game.find_other_snake_heads()
         new_location = self.simulate_move(self.game.get_self_head(), move)
 
         for head in heads:

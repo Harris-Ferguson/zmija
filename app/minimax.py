@@ -19,7 +19,7 @@ class MiniMax(PathfinderBase):
             self.simBoard.try_move(self.game.get_self(), move)
             # this line sets the depth to check
             # WARNING: setting this too high may cause the server to not respond within the 500ms window
-            move_values[move] = self.minimax(5, True)
+            move_values[move] = self.minimax(6, True)
             self.simBoard.undo_move()
         return max(move_values, key=move_values.get)
 
@@ -39,6 +39,10 @@ class MiniMax(PathfinderBase):
             scalar += 0.5
         if self.get_maxing_snake()['health'] < 25:
             scalar -= 0.8
+        if len(self.get_maxing_snake()["body"]) > len(self.get_enemy_snake()["body"]):
+            scalar += 0.5
+        if len(self.get_maxing_snake()["body"]) < len(self.get_enemy_snake()["body"]):
+            scalar -= 0.5
         return scalar
 
     def is_close_to_food(self):

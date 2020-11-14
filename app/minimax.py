@@ -51,8 +51,6 @@ class MiniMax(PathfinderBase):
         checks if the board state is a terminal leaf of our minmax tree (i.e. we died)
         :return: True if this state is a terminal leaf
         """
-        if len(self.simBoard.board["snakes"]) <= 1:
-            return True
         for move in ["left", "right", "up", "down"]:
             if self.will_hit_hazard(move, self.get_maxing_snake()["body"][0]):
                 return True

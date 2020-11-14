@@ -30,6 +30,8 @@ class MiniMax(PathfinderBase):
         :return: float scalar value of how good this node is for the maxing player
         """
         scalar = 0.0
+        if self.get_maxing_snake() not in self.simBoard.board["snakes"]:
+            return -1000000.0
         if self.get_maxing_snake()['body'][0]['x'] == self.simBoard.board["width"] - 1 or self.get_maxing_snake()['body'][0]['y'] \
                 == self.simBoard.board["height"] - 1:
             scalar -= 0.4
@@ -57,12 +59,14 @@ class MiniMax(PathfinderBase):
         checks if the board state is a terminal leaf of our minmax tree (i.e. we died)
         :return: True if this state is a terminal leaf
         """
+        if self.get_maxing_snake() not in self.simBoard.board["snakes"]:
+            return True
         for move in ["left", "right", "up", "down"]:
             if self.will_hit_hazard(move, self.get_maxing_snake()["body"][0]):
                 return True
         if self.is_off_edge(self.get_maxing_snake()["body"][0]):
             return True
-        if self.get_maxing_snake() not in self.simBoard.board["snakes"]:
+        if self.get_maxing_snake()["health"] <= 0:
             return True
         return False
 
@@ -77,16 +81,22 @@ class MiniMax(PathfinderBase):
         if depth == 0 or self.is_terminal_leaf():
             return self.heuristic()
         if max_player:
-            value = -1.0
+            value = -100000000.0
             for move in ["right", "left", "up", "down"]:
+                # I have no clue why this condition needs to be here, the
+                # first if should catch this case, but its not for a reason i cant find
+                if self.get_maxing_snake() not in self.simBoard.board["snakes"]:
+                    return value
                 self.simBoard.try_move(self.get_maxing_snake(), move)
                 attempt = self.minimax(depth - 1, False)
                 value = max(value, attempt)
                 self.simBoard.undo_move()
             return value
         else:
-            value = 1.0
+            value = 1000000000.0
             for move in ["right", "left", "up", "down"]:
+                if self.get_enemy_snake() not in self.simBoard.board["snakes"]:
+                    return value
                 enemy_snake = self.get_enemy_snake()
                 self.simBoard.try_move(enemy_snake, move)
                 attempt = self.minimax(depth - 1, True)

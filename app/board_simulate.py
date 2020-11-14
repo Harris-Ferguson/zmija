@@ -5,18 +5,28 @@ class BoardSimulate(object):
         self.board = board
         self.last_board = self.board
 
+    # note to self: run this function once per snake on the board and you essentially have
+    # game engine. this was written by refrencing the official game rules at:
+    # https://docs.battlesnake.com/references/rules
+    # might be a good side project...
     def try_move(self, player, move):
         next_move = PathfinderBase.simulate_move(player["body"][0], move)
         bad_squares = self.create_invalid_squares()
+        self.last_board = self.board
         for snake in self.board["snakes"]:
             if snake["name"] == player["name"]:
                 snake["body"].insert(0, next_move)
+                snake["body"].remove(snake["body"][-1])
+                snake["health"] -= 1
                 if next_move in bad_squares:
+                    self.board["snakes"].remove(snake)
+                if snake["health"] == 0:
                     self.board["snakes"].remove(snake)
                 for food in self.board["food"]:
                     if next_move == food:
                         self.board["food"].remove(food)
                         snake["healh"] = 100
+                        snake["body"].insert(0, snake["body"][-1])
 
     def undo_move(self):
         self.board = self.last_board

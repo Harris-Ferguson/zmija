@@ -27,7 +27,6 @@ class MiniMax(PathfinderBase):
         :param self.simBoard: the self.simBoard simulation state to check the Heuristic function on (self.simBoardSimulate Object)
         :return: float scalar value of how good this node is for the maxing player
         """
-        print(self.simBoard.board)
         scalar = 0.0
         if self.get_maxing_snake()['body'][0]['x'] == self.simBoard.board["width"] - 1 or self.get_maxing_snake()['body'][0]['y'] \
                 == self.simBoard.board["height"] - 1:

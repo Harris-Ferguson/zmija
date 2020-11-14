@@ -16,6 +16,7 @@ class BoardSimulate(object):
                 for food in self.board["food"]:
                     if next_move == food:
                         self.board["food"].remove(food)
+                        snake["healh"] = 100
 
     def undo_move(self):
         self.board = self.last_board

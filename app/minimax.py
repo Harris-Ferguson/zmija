@@ -19,7 +19,7 @@ class MiniMax(PathfinderBase):
             self.simBoard.try_move(self.game.get_self(), move)
             # this line sets the depth to check
             # WARNING: setting this too high may cause the server to not respond within the 500ms window
-            move_values[move] = self.minimax(6, True)
+            move_values[move] = self.minimax(8, True)
             self.simBoard.undo_move()
         return max(move_values, key=move_values.get)
 

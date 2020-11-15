@@ -26,6 +26,9 @@ class FindPath(PathfinderBase):
         if len(good_moves) == 1:
             return good_moves[0]
         if len(good_moves) == 0:
-            return random.choice(safe_moves)
+            try:
+              return random.choice(safe_moves)
+            except IndexError:
+              return random.choice([x for x in moves if not self.will_hit_hazard(x)])
         else:
             return random.choice(good_moves)

@@ -40,6 +40,7 @@ class Battlesnake(object):
         # Valid moves are "up", "down", "left", or "right".
         data = cherrypy.request.json
         move_decider = decider.Decider(data)
+        print("turn", data["turn"])
 
         # Choose a direction
         move = move_decider.decide()

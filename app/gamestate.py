@@ -90,4 +90,12 @@ class GameState(object):
         for snake in snakes:
             # first element is the head
             heads.append(snake["body"][0])
+        heads.remove(self.get_self_head())
         return heads
+
+    def get_other_snakes(self):
+      snakes = []
+      for snake in self.board["snakes"]:
+        if snake["name"] != self.get_self()["name"]:
+          snakes.append(snake)
+      return snakes

@@ -45,16 +45,16 @@ class PathfinderBase(object):
         if self.is_off_edge(new_location):
             return True
         # Ignore the tail of our snake
-        if new_location["x"] == self.game.get_self["body"][-1]["x"] and new_location["y"] == \
-                self.game.get_self["body"][-1]["y"]:
+        if new_location["x"] == self.game.get_self()["body"][-1]["x"] and new_location["y"] == \
+                self.game.get_self()["body"][-1]["y"]:
             return False
         # Ignore the tails of other snakes if they are not about to eat something
         other_snakes = self.game.get_other_snakes()
         for snake in other_snakes:
             if new_location["x"] == snake["body"][-1]["x"] and new_location["y"] == snake["body"][-1]["y"]:
                 # if the snake whose tail we are about to cross is not near any food then we are safe; we are in danger otherwise
-                if self.will_hit_food(snake, "left") or self.will_hit_food(snake, "right") or self.will_hit_food(
-                        snake, "up") or self.will_hit_food(snake, "down"):
+                if self.will_hit_food(snake_head, "left") or self.will_hit_food(snake_head, "right") or self.will_hit_food(
+                        snake_head, "up") or self.will_hit_food(snake_head, "down"):
                     return True
                 else:
                     return False
@@ -158,14 +158,14 @@ class PathfinderBase(object):
                     return True
         return False
 
-    def get_pref_move(self):
+    def get_pref_moves(self, snake_head, possible_moves):
         """
         This function finds the best possible moves our snake can have and categorize them in 4 preference levels
+        :param snake_head: a dictionary represents the coordinate of the head of the snake to check
+        :param possible_moves: a list of possible moves
         :return: A list of 4 lists with each list contain a move(s); list at index 0 has preference level of 1,
         list at index 1 has preference level of 2,...
         """
-        possible_moves = ["up", "down", "left", "right"]
-        snake_head = self.game.get_self_head()
         pref_lvl_1 = []
         pref_lvl_2 = []
         pref_lvl_3 = []
@@ -190,6 +190,24 @@ class PathfinderBase(object):
                     snake_head, x) and self.head_collision_chance(snake_head, x):
                 pref_lvl_4.append(x)
         return [pref_lvl_1, pref_lvl_2, pref_lvl_3, pref_lvl_4]
+
+    def pick_best_move(self, pref_level):
+        """
+        Returns the best move out of all the available moves in a preference level
+        :param pref_level: a list representing a preference level containing moves that the snake can choose from
+        :return: a string represents the best move that the snake should take (right, left, up, down)
+        """
+        possible_moves = ["up", "down", "left", "right"]
+        best_move = random.choice(possible_moves)  # this is the move without the most freedom, least hazard around it
+        min_hazard = 4  # the least number of hazard to compare
+        for move in pref_level:
+            pref_list_second = self.get_pref_moves(self.simulate_move(self.game.get_self_head(), move), possible_moves)
+            num_of_hazard = 4 - (len(pref_list_second[0]) + len(pref_list_second[1]) + len(pref_list_second[2]) + len(
+                pref_list_second[3]))
+            if num_of_hazard < min_hazard:
+                best_move = move
+                min_hazard = num_of_hazard
+        return best_move
 
     def trap_lookahead(self, move, depth):
       """

@@ -43,13 +43,22 @@ class PathfinderBase(object):
         # Check if we will hit a wall
         if self.is_off_edge(new_location):
             return True
+        # Ignore the tail of our snake
+        if new_location["x"] == self.game.get_self["body"][-1]["x"] and new_location["y"] == \
+                self.game.get_self["body"][-1]["y"]:
+            return False
+        # Ignore the tails of other snakes if they are not about to eat something
+        other_snakes = self.game.get_other_snakes()
+        for snake in other_snakes:
+            if new_location["x"] == snake["body"][-1]["x"] and new_location["y"] == snake["body"][-1]["y"]:
+                # if the snake whose tail we are about to cross is not near any food then we are safe; we are in danger otherwise
+                if self.will_hit_food(snake, "left") or self.will_hit_food(snake, "right") or self.will_hit_food(
+                        snake, "up") or self.will_hit_food(snake, "down"):
+                    return True
+                else:
+                    return False
         # check if we will hit a bad square
         for square in bad_squares:
-            # ignore the tail of our snake
-            if self.game.get_self["body"][-1]["x"] == square["x"] and self.game.get_self["body"][-1]["y"] == square["y"]:
-                return False
-            # ignore the tails of other snakes if they are not about to eat something
-            if self.game.get
             if new_location["x"] == square["x"] and new_location["y"] == square["y"]:
                 return True
         return False

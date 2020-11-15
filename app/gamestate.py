@@ -42,7 +42,7 @@ class GameState(object):
         @return the remaining snakes currently on the board (1-3)
         """
         snakes = []
-        for snake in self.board["snakes"]:
+        for snake in self.get_remaining_snakes():
             if snake["name"] != self.get_self()["name"]:
                 snakes.append(snake)
         return snakes
@@ -59,7 +59,7 @@ class GameState(object):
         Returns the location of all squares occupied by snakes (including self)
         @return a list of x-y dicts of locations on the board occupied by snakes
         """
-        snakes = self.board["snakes"]
+        snakes = self.get_remaining_snakes()
         occupied = []
         for snake in snakes:
             for spot in snake["body"]:

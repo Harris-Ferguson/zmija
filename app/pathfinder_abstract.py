@@ -209,7 +209,7 @@ class PathfinderBase(object):
                 min_hazard = num_of_hazard
         return best_move
 
-    def trap_lookahead(self, move, depth):
+    def trap_lookahead(self, pos, move, depth):
       """
       Looks fowards a few moves to see if we will get trapped
       """

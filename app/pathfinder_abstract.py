@@ -9,7 +9,6 @@ class PathfinderBase(object):
         @param gamestate: GameState object of the current game
         """
         self.game = gamestate
-        self.path = []
         super().__init__()
 
     @abstractmethod
@@ -142,3 +141,16 @@ class PathfinderBase(object):
                 if new_enemy_move["x"] == new_location["x"] and new_enemy_move["y"] == new_location["y"]:
                     return True
         return False
+
+    def trap_lookahead(self, move, depth):
+      """
+      Looks fowards a few moves to see if we will get trapped
+      """
+      if depth == 0:
+        return False
+      if self.will_hit_hazard(move):
+        return True
+      if self.trap_lookahead(move, depth - 1):
+          return True
+    
+    

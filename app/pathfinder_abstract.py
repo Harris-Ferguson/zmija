@@ -45,6 +45,11 @@ class PathfinderBase(object):
             return True
         # check if we will hit a bad square
         for square in bad_squares:
+            # ignore the tail of our snake
+            if self.game.get_self["body"][-1]["x"] == square["x"] and self.game.get_self["body"][-1]["y"] == square["y"]:
+                return False
+            # ignore the tails of other snakes if they are not about to eat something
+            if self.game.get
             if new_location["x"] == square["x"] and new_location["y"] == square["y"]:
                 return True
         return False
@@ -90,15 +95,15 @@ class PathfinderBase(object):
                 if next_spot["y"] > spot["y"]:
                     return True
 
-    def will_hit_food(self, move):
+    def will_hit_food(self, snake, move):
         """
         Takes the proposed move and checks if it will it a food on the board
         :param move: a move choice string (up, down, right, left)
+        :param snake: a dictionary represents the snake to check
         :return: True if the move will hit a food, false if the move does not.
         """
-
         food_spots = self.game.find_food()
-        new_location = self.simulate_move(self.game.get_self_head(), move)
+        new_location = self.simulate_move(snake["body"][0], move)
         # Check if we hit a food
         for food in food_spots:
             if new_location["x"] == food["x"] and new_location["y"] == food["y"]:

@@ -15,16 +15,16 @@ class FullPath(PathfinderBase):
         'Avoid any food and trapping self'
         for x in possible_moves:
             # if no food and no head collision chance
-            if not self.will_hit_food(x) and not self.will_hit_hazard(x) and not self.head_collision_chance(x):
+            if not self.will_hit_food(self.game.get_self(), x) and not self.will_hit_hazard(x) and not self.head_collision_chance(x):
                 pref_lvl_1.append(x)
             # if food and no head collision chance
-            elif self.will_hit_food(x) and not self.will_hit_hazard(x) and not self.head_collision_chance(x):
+            elif self.will_hit_food(self.game.get_self(), x) and not self.will_hit_hazard(x) and not self.head_collision_chance(x):
                 pref_lvl_2.append(x)
             # if no food and collision chance
-            elif not self.will_hit_food(x) and not self.will_hit_hazard(x) and self.head_collision_chance(x):
+            elif not self.will_hit_food(self.game.get_self(), x) and not self.will_hit_hazard(x) and self.head_collision_chance(x):
                 pref_lvl_3.append(x)
             # if food and head collision chance
-            elif self.will_hit_food(x) and not self.will_hit_hazard(x) and self.head_collision_chance(x):
+            elif self.will_hit_food(self.game.get_self(), x) and not self.will_hit_hazard(x) and self.head_collision_chance(x):
                 pref_lvl_4.append(x)
 
         'Pick move in preference order'

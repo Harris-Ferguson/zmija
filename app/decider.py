@@ -17,14 +17,14 @@ class Decider(object):
         returns a move choice
         @return a string move choice, either up down left or right
         """
-        food = self.get_closest_food(self.game.find_food())
-        if not food:
+        food = self.get_best_food()
+        if not food[1]:
           pathfinder = full_path.FullPath(self.game)
         elif self.shortest_snake():
           pathfinder = find_path.FindPath(self.game)
         else:
           pathfinder = find_path.FindPath(self.game)
-        return pathfinder.next_move(food)
+        return pathfinder.next_move(food[0])
 
     def shortest_snake(self):
       for snake in self.game.get_other_snakes():
@@ -61,22 +61,34 @@ class Decider(object):
         """
         # set up variables for loop
         best_coor = self.get_closest_food(self.game.find_food())
+        if not best_coor:  # if there is no food on the board
+            return [best_coor, False]
         my_snake_coor = self.game.get_self_head()
         our_distance_to_food = self.get_distance(my_snake_coor, best_coor)
         bad_coor = False
         curr_food_size = 0
 
-        while curr_food_size + 1 < len(self.game.find_food()): # stop if there are none food coordinate left to check
-            for snake in self.game.get_remaining_snakes(): # check if other snakes are closer to our ideal food than we are
-                if (snake["name"] != self.game.get_self()["name"]):  # change the name when we decide our snake's name
-                    if self.get_distance(snake["head"], best_coor) < our_distance_to_food:
+        # If there is only one food on the board
+        if len(self.game.find_food()) == 1:
+            for snake in self.game.get_remaining_snakes():  # check if other snakes are closer to our ideal food than we are
+                if (snake["name"] != self.game.get_self()["name"]):
+                    if self.get_distance(snake["head"], best_coor) <= our_distance_to_food:
                         bad_coor = True
                         break
+            if bad_coor:
+                return [best_coor, False]  # if the food on the board is not worth getting
 
+        # If there is more than one one food on the board
+        while curr_food_size + 1 < len(self.game.find_food()): # stop if there is no food coordinate left to check
+            for snake in self.game.get_remaining_snakes(): # check if other snakes are closer to our ideal food than we are
+                if (snake["name"] != self.game.get_self()["name"]):
+                    if self.get_distance(snake["head"], best_coor) <= our_distance_to_food:
+                        bad_coor = True
+                        break
             if bad_coor:    # if they are closer to our current ideal food, pick the next closest food to us in the food list
                 curr_food_size += 1    # skip the current food coordinate since it is closer to our opponents
                 best_coor = self.get_closest_food(self.game.find_food()[curr_food_size:])
                 our_distance_to_food = self.get_distance(my_snake_coor, best_coor)
             else:
-                return [best_coor, True]
-        return [best_coor, False]
+                return [best_coor, True] # if a good food is found on the board
+        return [best_coor, False]  # if the food on the board is not worth getting

@@ -11,7 +11,7 @@ class FindPath(PathfinderBase):
         current_location = self.game.get_self_head()
         choices = []
         moves = ["left", "right", "down", "up"]
-        safe_moves = [x for x in moves if not self.will_hit_hazard(x) and not self.head_collision_chance(x)]
+        safe_moves = [x for x in moves if not self.will_hit_hazard(current_location, x) and not self.head_collision_chance(current_location, x)]
         if target["x"] != current_location["x"]:
             if target["x"] < current_location["x"]:
                 choices.append("left")
@@ -34,6 +34,6 @@ class FindPath(PathfinderBase):
             try:
               return random.choice(safe_moves)
             except IndexError:
-              return random.choice([x for x in moves if not self.will_hit_hazard(x) and not self.trap_lookahead(x, 3)])
+              return random.choice([x for x in moves if not self.will_hit_hazard(current_location, x) and not self.trap_lookahead(x, 3)])
         else:
             return random.choice(good_moves)

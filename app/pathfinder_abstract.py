@@ -1,5 +1,5 @@
 from abc import abstractmethod
-
+import random
 
 class PathfinderBase(object):
 
@@ -32,14 +32,15 @@ class PathfinderBase(object):
             return True
         return False
 
-    def will_hit_hazard(self, move):
+    def will_hit_hazard(self, snake_head, move):
         """
         Takes the proposed move and checks if it will hit a hazard on the board
+        @param snake_head a dictionary represents the coordinate of the head of the snake to check
         @param a move choice string (up, down, right, left)
         @return True if the move will hit a hazard, false if the move is safe
         """
         bad_squares = self.game.find_bad_squares()
-        new_location = self.simulate_move(self.game.get_self_head(), move)
+        new_location = self.simulate_move(snake_head, move)
         # Check if we will hit a wall
         if self.is_off_edge(new_location):
             return True
@@ -104,15 +105,15 @@ class PathfinderBase(object):
                 if next_spot["y"] > spot["y"]:
                     return True
 
-    def will_hit_food(self, snake, move):
+    def will_hit_food(self, snake_head, move):
         """
         Takes the proposed move and checks if it will it a food on the board
         :param move: a move choice string (up, down, right, left)
-        :param snake: a dictionary represents the snake to check
+        :param snake_head: a dictionary represents the coordinate of the head of the snake to check
         :return: True if the move will hit a food, false if the move does not.
         """
         food_spots = self.game.find_food()
-        new_location = self.simulate_move(snake["body"][0], move)
+        new_location = self.simulate_move(snake_head, move)
         # Check if we hit a food
         for food in food_spots:
             if new_location["x"] == food["x"] and new_location["y"] == food["y"]:
@@ -138,15 +139,16 @@ class PathfinderBase(object):
     def find_closest_food(self):
         pass
 
-    def head_collision_chance(self, move):
+    def head_collision_chance(self, snake_head, move):
         """
         Checks if the move is in danger of a head to head collision
         with another snake.
         :param move:  A string move (left, right, up, down)
+        :param snake_head: a dictionary represents the coordinate of the head of the snake to check
         :return: True if there is a chance for a head collision, false if there is no chance.
         """
         heads = self.game.find_other_snake_heads()
-        new_location = self.simulate_move(self.game.get_self_head(), move)
+        new_location = self.simulate_move(snake_head, move)
         possible_enemy_moves = ["up", "right", "left", "down"]
 
         for head in heads:
@@ -156,13 +158,46 @@ class PathfinderBase(object):
                     return True
         return False
 
+    def get_pref_move(self):
+        """
+        This function finds the best possible moves our snake can have and categorize them in 4 preference levels
+        :return: A list of 4 lists with each list contain a move(s); list at index 0 has preference level of 1,
+        list at index 1 has preference level of 2,...
+        """
+        possible_moves = ["up", "down", "left", "right"]
+        snake_head = self.game.get_self_head()
+        pref_lvl_1 = []
+        pref_lvl_2 = []
+        pref_lvl_3 = []
+        pref_lvl_4 = []
+
+        'Avoid any food and trapping self'
+        for x in possible_moves:
+            # if no food and no head collision chance
+            if not self.will_hit_food(snake_head, x) and not self.will_hit_hazard(
+                    snake_head, x) and not self.head_collision_chance(snake_head, x):
+                pref_lvl_1.append(x)
+            # if food and no head collision chance
+            elif self.will_hit_food(snake_head, x) and not self.will_hit_hazard(
+                    snake_head, x) and not self.head_collision_chance(snake_head, x):
+                pref_lvl_2.append(x)
+            # if no food and collision chance
+            elif not self.will_hit_food(snake_head, x) and not self.will_hit_hazard(
+                    snake_head, x) and self.head_collision_chance(snake_head, x):
+                pref_lvl_3.append(x)
+            # if food and head collision chance
+            elif self.will_hit_food(snake_head, x) and not self.will_hit_hazard(
+                    snake_head, x) and self.head_collision_chance(snake_head, x):
+                pref_lvl_4.append(x)
+        return [pref_lvl_1, pref_lvl_2, pref_lvl_3, pref_lvl_4]
+
     def trap_lookahead(self, move, depth):
       """
       Looks fowards a few moves to see if we will get trapped
       """
       if depth == 0:
         return False
-      if self.will_hit_hazard(move):
+      if self.will_hit_hazard(self.game.get_self_head(), move):
         return True
       if self.trap_lookahead(move, depth - 1):
           return True

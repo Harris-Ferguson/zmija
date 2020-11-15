@@ -12,7 +12,7 @@ class SimplePath(PathfinderBase):
         else:
             choice = self.simple_path(closest_food[0])
         # if its dangerous move in a random other direction
-        while self.will_hit_hazard(choice):
+        while self.will_hit_hazard(self.game.get_self_head, choice):
             choice = random.choice(possible_moves)
         return choice
 

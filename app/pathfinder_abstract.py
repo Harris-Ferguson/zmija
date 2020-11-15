@@ -9,7 +9,6 @@ class PathfinderBase(object):
         @param gamestate: GameState object of the current game
         """
         self.game = gamestate
-        self.path = []
         super().__init__()
 
     @abstractmethod

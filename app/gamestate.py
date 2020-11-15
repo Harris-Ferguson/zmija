@@ -36,6 +36,17 @@ class GameState(object):
         """
         return self.board["snakes"]
 
+    def get_other_snakes(self):
+        """
+        returns the remaining snakes on the board (excluding our snake)
+        @return the remaining snakes currently on the board (1-3)
+        """
+        snakes = []
+        for snake in self.get_remaining_snakes():
+            if snake["name"] != self.get_self()["name"]:
+                snakes.append(snake)
+        return snakes
+
     def get_health(self):
         """
         returns the health of our snake
@@ -48,7 +59,7 @@ class GameState(object):
         Returns the location of all squares occupied by snakes (including self)
         @return a list of x-y dicts of locations on the board occupied by snakes
         """
-        snakes = self.board["snakes"]
+        snakes = self.get_remaining_snakes()
         occupied = []
         for snake in snakes:
             for spot in snake["body"]:
@@ -84,18 +95,22 @@ class GameState(object):
         Find and return info on all of the other snakes head positions.
         :return: A list of dicts holding coordinates of snake heads(including self)
         """
-
-        snakes = self.board["snakes"]
         heads = []
-        for snake in snakes:
+        for snake in self.get_remaining_snakes():
             # first element is the head
             heads.append(snake["body"][0])
         heads.remove(self.get_self_head())
         return heads
 
-    def get_other_snakes(self):
-      snakes = []
-      for snake in self.board["snakes"]:
-        if snake["name"] != self.get_self()["name"]:
-          snakes.append(snake)
-      return snakes
+    def identify_snake(self, position):
+        """
+        Find the snake whose body is on the given position (x-y)
+        :param position: x-y dictionary represents coordinate of a snake on the board to identify
+        :return: a dictionary represents the snake if there is a snake at the given position;
+        returns an empty dictionary otherwise
+        """
+        for snake in self.get_remaining_snakes():
+            for coordinate in snake["body"]:
+                if coordinate["x"] == position["x"] and coordinate["y"] == position["y"]:
+                    return snake
+        return {}

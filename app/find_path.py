@@ -23,8 +23,10 @@ class FindPath(PathfinderBase):
             else:
                 choices.append("up")
         good_moves = list(set(safe_moves).intersection(choices))
+        print("Good Moves ", moves)
         for move in good_moves:
-          if self.trap_lookahead(move, 5):
+          if self.trap_lookahead(move, 3):
+            print("lookahead removed: ", move)
             good_moves.remove(move)
         if len(good_moves) == 1:
             return good_moves[0]
@@ -32,6 +34,6 @@ class FindPath(PathfinderBase):
             try:
               return random.choice(safe_moves)
             except IndexError:
-              return random.choice([x for x in moves if not self.will_hit_hazard(x)])
+              return random.choice([x for x in moves if not self.will_hit_hazard(x) and not self.trap_lookahead(x, 3)])
         else:
             return random.choice(good_moves)

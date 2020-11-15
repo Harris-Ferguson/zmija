@@ -22,11 +22,8 @@ class Decider(object):
           pathfinder = full_path.FullPath(self.game)
         elif self.shortest_snake():
           pathfinder = find_path.FindPath(self.game)
-        elif self.game.get_self()["health"] < 30:
-          pathfinder = find_path.FindPath(self.game)
         else:
-          pathfinder = full_path.FullPath(self.game)
-        print(type(pathfinder))
+          pathfinder = find_path.FindPath(self.game)
         return pathfinder.next_move(food)
 
     def shortest_snake(self):

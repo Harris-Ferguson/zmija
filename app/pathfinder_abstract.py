@@ -150,8 +150,7 @@ class PathfinderBase(object):
         return False
       if self.will_hit_hazard(move):
         return True
-      for move in ["right", "left", "up", "down"]:
-        if self.trap_lookahead(move, depth - 1):
+      if self.trap_lookahead(move, depth - 1):
           return True
     
     

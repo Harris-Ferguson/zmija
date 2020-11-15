@@ -215,9 +215,15 @@ class PathfinderBase(object):
       """
       if depth == 0:
         return False
-      if self.will_hit_hazard(self.game.get_self_head(), move):
+      if self.square_on_hazard(pos):
         return True
-      if self.trap_lookahead(move, depth - 1):
+      next_spot = self.simulate_move(pos, move)
+      if self.trap_lookahead(next_spot, move, depth - 1):
           return True
     
-    
+    def square_on_hazard(self, pos):
+      bad_squares = self.game.find_bad_squares()
+      for square in bad_squares:
+        if pos == square:
+          return True
+      return False

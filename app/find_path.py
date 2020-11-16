@@ -8,6 +8,10 @@ class FindPath(PathfinderBase):
         return move
 
     def find_path(self, target):
+        """
+        Move towards a spot
+        :param target: xy dict of the location to move to
+        """
         current_location = self.game.get_self_head()
         choices = []
         moves = ["left", "right", "down", "up"]

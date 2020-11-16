@@ -8,7 +8,6 @@ class Decider(object):
     """
     A class to decide the next move
     """
-
     def __init__(self, data):
         self.game = gamestate.GameState(data)
 
@@ -28,9 +27,13 @@ class Decider(object):
         return pathfinder.next_move(food[0])
 
     def shortest_snake(self):
+    """
+    Checks if we are the shortest snake
+    :return: true if we are the shorest snake on the board, false otherwise
+    """
       for snake in self.game.get_other_snakes():
         if len(self.game.get_self()["body"]) < len(snake["body"]):
-          return True 
+          return True
       return False
 
     def get_distance(self, coor1, coor2):

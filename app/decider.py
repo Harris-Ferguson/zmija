@@ -24,6 +24,7 @@ class Decider(object):
           pathfinder = find_path.FindPath(self.game)
         else:
           pathfinder = find_path.FindPath(self.game)
+        print(type(pathfinder))
         return pathfinder.next_move(food[0])
 
     def shortest_snake(self):

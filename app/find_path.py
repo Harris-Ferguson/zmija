@@ -33,6 +33,6 @@ class FindPath(PathfinderBase):
             try:
               return random.choice(safe_moves)
             except IndexError:
-              return random.choice([x for x in moves if not self.will_hit_hazard(x) and not self.trap_lookahead(self.game.get_self_head(), x, 3)])
+              return random.choice([x for x in moves if not self.will_hit_hazard(self.game.get_self_head(), x) and not self.trap_lookahead(self.game.get_self_head(), x, 3)])
         else:
             return random.choice(good_moves)

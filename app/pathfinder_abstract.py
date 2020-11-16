@@ -9,6 +9,7 @@ class PathfinderBase(object):
         @param gamestate: GameState object of the current game
         """
         self.game = gamestate
+        self.lastmove = ""
         super().__init__()
 
     @abstractmethod
@@ -45,8 +46,7 @@ class PathfinderBase(object):
         if self.is_off_edge(new_location):
             return True
         # Ignore the tail of our snake
-        if new_location["x"] == self.game.get_self()["body"][-1]["x"] and new_location["y"] == \
-                self.game.get_self()["body"][-1]["y"]:
+        if new_location == self.game.get_self()["body"][-1] and new_location not in self.game.find_food() and len(self.game.get_self()["body"]) > 2:
             return False
         # Ignore the tails of other snakes if they are not about to eat something
         other_snakes = self.game.get_other_snakes()
